@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // Default configuration for OpenCode Portable v2
+  // Shell environment: PowerShell 5.1+ prevents CMD character rendering defects
+  "shell": "powershell.exe",
+
+  // Active default model (Free trial tier)
+  "model": "opencode/big-pickle",
+  "small_model": "opencode/nemotron-3.5-lightning-free",
+
+
+  // Update notification mode: "notify" (default), true (auto), or false (disable)
+  "autoupdate": "notify"
+
+  // Commercial / BYOK Provider Examples (run /connect inside OpenCode):
+  // "model": "anthropic/claude-3-7-sonnet",
+  // "model": "openai/gpt-4o",
+  // "model": "google/gemini-2.5-flash",
+  // "default_agent": "build"
+}
+

@@ -1,0 +1,67 @@
+name: CI - Automated Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-portable-suite:
+    name: Run Test Suite (Windows 10/11 Runner)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 1. Validate PowerShell AST Syntax
+        shell: powershell
+        run: |
+          Get-ChildItem -Filter *.ps1 -Recurse | ForEach-Object {
+            Write-Host "Checking $($_.FullName)..."
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$null, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error $_.Message }
+              exit 1
+            }
+          }
+          Write-Host "All PowerShell scripts parsed without syntax errors!"
+
+      - name: 2. Validate Batch Environment Launcher
+        shell: cmd
+        run: |
+          call scripts\env.bat
+          echo Environment initialized successfully.
+
+      - name: 3. Bootstrap Portable Suite (Download Official Upstream Binaries)
+        shell: powershell
+        run: |
+          & .\scripts\setup.ps1
+          if (-not (Test-Path "bin\opencode.exe")) {
+            Write-Error "Bootstrap failed: bin\opencode.exe was not created."
+            exit 1
+          }
+
+      - name: 4. Execute Full Automated Test Suite
+        shell: powershell
+        run: |
+          & .\scripts\test.ps1
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Automated test suite failed with exit code $LASTEXITCODE."
+            exit $LASTEXITCODE
+          }
+
+      - name: 5. Verify Package Release Integrity
+        shell: powershell
+        run: |
+          & .\scripts\package-release.ps1 -OutFile "ci-test-package.zip"
+          if (-not (Test-Path "ci-test-package.zip")) {
+            Write-Error "Release packager failed to generate clean zip."
+            exit 1
+          }
+          Remove-Item "ci-test-package.zip" -Force

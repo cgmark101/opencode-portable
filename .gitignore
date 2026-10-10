@@ -1,0 +1,61 @@
+# ==============================================================================
+# OpenCode Portable - .gitignore (Public Repository Protection)
+# ==============================================================================
+
+# 1. Binarios y herramientas (se descargan on-demand / via setup o release)
+/bin/opencode.exe
+/bin/opencode.exe.bak
+/bin/*.exe
+/tools/git/
+/tools/node/
+/tools/*/
+
+# 2. Archivos comprimidos y paquetes
+*.zip
+*.tar.gz
+*.tgz
+*.7z
+
+# 3. Datos personales, perfiles y secretos del usuario (CRÍTICO: nunca comitear)
+/data/temp/*
+/data/cache/*
+/data/logs/*
+/data/appdata/*
+/data/profile/*
+/data/state/*
+/data/share/*
+/data/config/.gitconfig
+/data/config/opencode/opencode.json
+/data/config/opencode/opencode.jsonc
+/data/config/opencode/service.json
+**/service.json
+/Microsoft/
+**/ModuleAnalysisCache
+*.analysis
+
+
+
+# Permitir template de configuración y .gitkeep para mantener la estructura vacía
+!/data/config/opencode/opencode.example.jsonc
+!/data/**/.gitkeep
+!/bin/.gitkeep
+!/tools/.gitkeep
+/data/config/opencode/skills/*
+!/data/config/opencode/skills/.gitkeep
+!/data/config/opencode/skills/git-workflow/
+
+
+# 4. Logs del sistema y desarrollo
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 5. Archivos de sistema / IDEs
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.bak

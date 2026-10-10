@@ -1,0 +1,49 @@
+name: 🐛 Bug Report
+description: Report a problem or unexpected behavior in OpenCode Portable
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report an issue!
+  - type: input
+    id: version
+    attributes:
+      label: OpenCode Portable Version
+      description: Run `opencode.bat --version` or check the update script.
+      placeholder: "e.g. 2.0.26"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Windows Version
+      options:
+        - Windows 11 (64-bit)
+        - Windows 10 (64-bit)
+        - Windows Server 2022 / 2019
+    validations:
+      required: true
+  - type: textarea
+    id: describe-bug
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce the problem?
+      placeholder: |
+        1. Plug in USB drive
+        2. Run `opencode.bat`
+        3. See error ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs or Terminal Output
+      description: Paste any error messages or output from `data/logs/` or console.
+      render: shell
